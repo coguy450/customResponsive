@@ -7,7 +7,11 @@ var bodyParser = require('body-parser'),
 var swig  = require('swig');
 var controller = require('./app/controllers/server.controller.js');
 
-mongoose.connect('mongodb://localhost/fastMEAN');
+mongoose.connect('mongodb://localhost/fastMEAN', function(err, db) {
+    if (err) {
+        console.log('Try starting your MongoDB!');
+    }
+});
 
 app.set('view engine', 'html');
 app.set('view options', {
@@ -21,7 +25,7 @@ swig.setDefaults({ cache: false });
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use('/favicon.ico', express.static('public/images/favicon.ico'));
 
 app.get('/',controller.index);
 
